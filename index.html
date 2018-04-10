@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Angular 1 Test</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,800" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+  </head>
+  <body>
+    <div class="app" ng-class="{'app--naviopen': naviOpen}" ng-app="testApp" ng-controller="testCtrl">
+      <div class="app__inner">
+        <div class="app__overlay" ng-click="toggleNavi()"></div>
+        <header class="header">
+          <span class="header__title">Angular 1 Exercise: D&amp;D Stats</span>
+          <button class="header__icon" ng-click="toggleNavi()">
+            <i class="fa fa-bars"></i>
+          </button>
+        </header>
+        <nav class="navi">
+          <h3 class="navi__title">Navigation</h3>
+          <ul class="navi__list">
+            <li class="navi__item">
+              <a class="navi__link" href="#">
+                Menu Item #1
+              </a>
+            </li>
+            <li class="navi__item">
+              <a class="navi__link" href="#">
+                Menu Item #2
+              </a>
+            </li>
+            <li class="navi__item">
+              <a class="navi__link" href="#">
+                Menu Item #3
+              </a>
+            </li>
+            <li class="navi__item">
+              <a class="navi__link" href="#">
+                Menu Item #4
+              </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="container">
+          <div class="panel">
+            <section class="section">
+              <h1>Abilities</h1>
+              <ul class="list list--basic">
+                <li class="list__item" ng-repeat="i in abilityLabels">
+                  <div class="ability">
+                    <span class="ability__label">{{ i }}</span>
+                    <span class="ability__score">
+                      <input type="number" ng-model="abilityValues[abilityLabels.indexOf(i)]" min="1" max="35">
+                    </span>
+                    <span class="ability__mod">{{ abilityValues[abilityLabels.indexOf(i)] | calcMod }}</span>
+                  </div>
+                </li>
+              </ul>
+              <ul class="tablist">
+                <li class="tablist__item">
+                  <button class="tablist__link"
+                  ng-class="{'tablist__link--active': statsMethod === 'standard' }"
+                  ng-click="changeMethod('standard')">
+                    Standard
+                  </button>
+                </li>
+                <li class="tablist__item">
+                  <button class="tablist__link"
+                  ng-class="{'tablist__link--active': statsMethod === 'augmented' }"
+                  ng-click="changeMethod('augmented')">
+                    Augmented
+                  </button>
+                </li>
+                <li class="tablist__item">
+                  <button class="tablist__link"
+                  ng-class="{'tablist__link--active': statsMethod === 'wild' }"
+                  ng-click="changeMethod('wild')">
+                    Wild
+                  </button>
+                </li>
+              </ul>
+              <ul class="list list--inline">
+                <li class="list__item">
+                  <button class="button" ng-click="rollStats()">Roll Stats</button>
+                </li>
+                <li class="list__item">
+                  <button class="button button--outline" ng-click="resetStats()">Reset</button>
+                </li>
+              </ul>
+
+            </section>
+          </div>
+          <div class="panel">
+            <section class="section">
+              <h2>Dice Roller</h2>
+              <p>
+                <button class="button" ng-click="rollDice(4)">Roll D4</button>
+                <button class="button" ng-click="rollDice(6)">Roll D6</button>
+                <button class="button" ng-click="rollDice(8)">Roll D8</button>
+                <button class="button" ng-click="rollDice(10)">Roll D10</button>
+                <button class="button" ng-click="rollDice(12)">Roll D12</button>
+                <button class="button" ng-click="rollDice(20)">Roll D20</button>
+                <button class="button" ng-click="rollDice(100)">Roll D%</button>
+              </p>
+              <div class="die">
+                <div class="die__inner">
+                  <span class="die__roll">{{dieRoll}}</span>
+                </div>
+              </div>
+              <div class="diceroller">
+                <select>
+                  <option value="4">d4</option>
+                  <option value="6">d6</option>
+                  <option value="8">d8</option>
+                  <option value="10">d10</option>
+                  <option value="12">d12</option>
+                  <option value="20">d20</option>
+                  <option value="100">d%</option>
+                </select>
+                <input type="number" min="1" max="20" value="1">
+                <button class="button">Roll</button>
+              </div>
+            </section>
+          </div>
+          <div class="panel">
+            <section class="section">
+              <h2>Random %</h2>
+              <div>
+                <p ng-bind="test"></p>
+                <button class="button" ng-click="btnHandle()">%</button>
+              </div>
+            </section>
+            <section class="section">
+              <h2>Toggle Class</h2>
+              <button class="button" ng-class="{'button--active': isActive}" ng-click="activeButton()">
+                Toggle this button
+              </button>
+            </section>
+          </div>
+        </div>
+        <div class="container">
+          <div class="panel">
+            <section class="section">
+              <h1>Original Inventory</h1>
+              <inventory inventory="inventory"></inventory>
+            </section>
+          </div>
+          <div class="panel">
+            <section class="section">
+              <h1>One Way Inventory</h1>
+              <inventory-one-way inventory="{{inventory}}"></inventory-one-way>
+            </section>
+          </div>
+          <div class="panel">
+            <section class="section">
+              <h1>Two Way Inventory</h1>
+              <inventory-two-way inventory="inventory"></inventory-two-way>
+            </section>
+          </div>
+        </div>
+        <div class="container">
+          <div class="panel">
+            <button class="button" toggle-button>
+              Active Button Directive
+            </button>
+          </div>
+          <div class="panel">
+            <rest-component></rest-component>
+          </div>
+        </div>
+        <footer class="footer">
+          <small>Angular 1 App by {{ firstName + " " + lastName }}</small>
+        </footer>
+      </div> <!-- end app__inner -->
+    </div>
+    <script type="text/javascript" src="app/controllers/stats.js"></script>
+    <script type="text/javascript" src="app/services/dice.js"></script>
+    <script type="text/javascript" src="app/services/store.js"></script>
+    <script type="text/javascript" src="app/services/rest.js"></script>
+    <script type="text/javascript" src="app/directives/inventory.js"></script>
+    <script type="text/javascript" src="app/directives/inventoryOneWay.js"></script>
+    <script type="text/javascript" src="app/directives/inventoryTwoWay.js"></script>
+    <script type="text/javascript" src="app/directives/activeButton.js"></script>
+    <script type="text/javascript" src="app/directives/restComponent.js"></script>
+  </body>
+</html>

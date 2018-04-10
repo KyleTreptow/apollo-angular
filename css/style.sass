@@ -1,0 +1,396 @@
+// sass --watch css --style compressed
+
+@import "modules/_functions.sass"
+@import "modules/_mixins.sass"
+
+//////////////////////////////////////////////
+// Global Vars
+//////////////////////////////////////////////
+
+// Typography
+$fs-base: 16px
+$line-height: 1.6
+$blh: round($fs-base * $line-height)
+
+$font-text: "'Open Sans', sans-serif"
+$font-title: "'Raleway', sans-serif"
+$title-trans: "none"
+$title-weight: 700
+
+// Font Scale Factor
+// 1.067: Minor Second
+// 1.125: Major Second
+// 1.200: Minor Third
+// 1.250: Major Third
+// 1.333: Perfect Fourth
+// 1.414: Augmented Fourth
+// 1.500: Perfect Fifth
+// 1.618: Golden Ratio
+
+$scale-factor: 1.250
+$xs-scale-factor: 1.125
+
+// media breakpoints (min)
+$media-min-xs: "screen and (min-width: 576px)"
+$media-min-sm: "screen and (min-width: 768px)"
+$media-min-md: "screen and (min-width: 992px)"
+$media-min-lg: "screen and (min-width: 1200px)"
+$media-min-xl: "screen and (min-width: 1400px)"
+
+// media breakpoints (max)
+$media-max-xs: "screen and (max-width: 575px)"
+$media-max-sm: "screen and (max-width: 767px)"
+$media-max-md: "screen and (max-width: 991px)"
+$media-max-lg: "screen and (max-width: 1199px)"
+$media-max-xl: "screen and (max-width: 1399px)"
+
+// colors
+$clr-main: #003d59
+$clr-alt: #167070
+$clr-hlt: #ff5a44
+$clr-bg: #eee
+$clr-text: #666
+$clr-title: $clr-main
+
+@import "modules/_reset.sass"
+
+//////////////////////////////////////////////
+// Component: App
+//////////////////////////////////////////////
+
+.app
+  background: $clr-main
+  overflow: hidden
+  &__inner
+    position: relative
+    min-height: 100vh
+    background: #eee
+    z-index: 0
+    +transition(transform)
+    +transform-translate(0, 0)
+    .app--naviopen &
+      +transform-translate(-400px, 0)
+  &__overlay
+    +transition(background-color)
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background: transparentize(#000, 1.0)
+    cursor: pointer
+    z-index: -100
+    visibility: hidden
+    .app--naviopen &
+      background: transparentize(#000, 0.5)
+      z-index: 100
+      visibility: visible
+  @media #{$media-max-xs}
+    &__inner
+      .app--naviopen &
+        +transform-translate(-80%, 0)
+
+//////////////////////////////////////////////
+// Component: Navigation
+//////////////////////////////////////////////
+
+.navi
+  position: fixed
+  top: 0
+  right: 0
+  width: 400px
+  padding-top: $blh*2
+  +transform-translate(100%, 0)
+  &__title
+    font-size: $fs-base / $scale-factor
+    color: lighten($clr-main, 15%)
+    margin-bottom: $blh/4
+    padding: 0 $blh
+    text-transform: uppercase
+  &__list
+    padding: 0
+    padding-bottom: $blh*2
+    border-bottom: solid 1px transparentize(#fff, 0.75)
+  &__item
+    display: block
+    color: #fff
+  &__link
+    display: block
+    background: transparent
+    padding: $blh/2 $blh
+    color: #fff
+    text-decoration: none
+    font-weight: 600
+    border-bottom: solid 1px lighten($clr-main, 5%)
+    +transition(background-color)
+    .navi__item:first-child  &
+      border-top: solid 1px lighten($clr-main, 5%)
+    &:hover,
+    &:focus,
+    &:active
+      cursor: pointer
+      background-color: $clr-hlt
+  @media #{$media-max-xs}
+    width: 80%
+
+//////////////////////////////////////////////
+// Component: Header
+//////////////////////////////////////////////
+
+.header
+  background: #222
+  color: #fff
+  padding: $blh/2 $blh
+  position: relative
+  padding-right: $blh*3
+  z-index: 100
+  &__title
+    font-weight: 600
+  &__icon
+    @extend .fs-h4
+    display: block
+    position: absolute
+    top: 0
+    right: 0
+    height: 100%
+    padding: $blh/2 $blh
+    background: transparent
+    border: 0
+    border-left: solid 1px transparentize(#fff, 0.75)
+    color: #fff
+    +transition(background-color)
+    &:hover,
+    &:focus,
+    &:active
+      cursor: pointer
+      background: $clr-hlt
+
+//////////////////////////////////////////////
+// Component: Container
+//////////////////////////////////////////////
+
+.container
+  width: 100%
+  max-width: 100%
+  padding: $blh
+  @media #{$media-min-sm}
+    display: grid
+    grid-template-columns: 1fr 1fr 1fr
+    grid-gap: $blh
+
+//////////////////////////////////////////////
+// Component: Panel
+//////////////////////////////////////////////
+
+.panel
+  display: block
+  background: #fff
+  padding: $blh
+  border: solid 1px #ddd
+  border-radius: 3px
+  @media #{$media-max-sm}
+    margin-bottom: $blh
+  @media #{$media-min-sm}
+    grid-column: span 1
+
+//////////////////////////////////////////////
+// Component: Section
+//////////////////////////////////////////////
+.section
+  display: block
+  max-width: 100%
+  border-bottom: solid 1px #ddd
+  margin-bottom: $blh
+  padding-bottom: $blh
+  &:last-child
+    border: 0
+    margin-bottom: 0
+    padding-bottom: 0
+
+//////////////////////////////////////////////
+// Component: Ability
+//////////////////////////////////////////////
+
+.ability
+  display: grid
+  grid-template-columns: repeat(3, 1fr)
+  &__label
+    font-weight: bold
+  &__score
+    display: block
+  &__mod
+    &:before
+      content: '/'
+      margin-right: $blh/2
+
+//////////////////////////////////////////////
+// Component: List
+//////////////////////////////////////////////
+
+.list
+  padding: 0
+  margin-bottom: $blh
+  &--inline
+    margin-left: -$blh/4
+    margin-right: -$blh/4
+  &__item
+    .list--basic &
+      display: block
+      margin-bottom: $blh
+    .list--inline &
+      display: inline-block
+      padding: 0 $blh/4
+
+.tablist
+  position: relative
+  z-index: 0
+  padding: 0
+  margin-bottom: $blh
+  margin-left: -$blh/4
+  margin-right: -$blh/4
+  font-size: 0
+  line-height: 0
+  &:after
+    content: ''
+    display: block
+    position: relative
+    z-index: 5
+    width: 100%
+    height: 1px
+    background: #ddd
+  &__item
+    display: inline-block
+    padding: 0
+    font-size: $fs-base
+    line-height: $blh
+  &__link
+    position: relative
+    background: #fff
+    color: $clr-alt
+    padding: $blh/4 $blh/2
+    border: solid 1px #ddd
+    border-bottom: solid 1px transparent
+    margin-bottom: -1px
+    border-top-left-radius: 6px
+    border-top-right-radius: 6px
+    z-index: 0
+    &:hover,
+    &:focus,
+    &:active
+      cursor: pointer
+      outline: 0
+      background: #fafafa
+      color: $clr-main
+    &--active
+      color: $clr-hlt
+      border-bottom: solid 1px #fff
+      z-index: 10
+      &:hover,
+      &:focus,
+      &:active
+        cursor: auto
+        color: $clr-hlt
+        background: #fff
+
+
+//////////////////////////////////////////////
+// Component: Button
+//////////////////////////////////////////////
+
+.button
+  padding: $blh/8 $blh/4
+  border: solid 1px darken($clr-alt, 10%)
+  border-radius: 3px
+  margin-bottom: $blh/4
+  background: $clr-alt
+  color: #fff
+  padding: $blh/4 $blh/2
+  +transition-2(background-color, border-color)
+  &:hover,
+  &:focus,
+  &:active
+    cursor: pointer
+    background: darken($clr-alt, 10%)
+  &--outline
+    background: #fff
+    color: $clr-alt
+    border-color: $clr-alt
+    +transition-2(background-color, color)
+    &:hover,
+    &:focus,
+    &:active
+      color: #fff
+  &--active
+    background: $clr-hlt
+    border-color: darken($clr-hlt, 15%)
+    &:hover,
+    &:focus,
+    &:active
+      background: $clr-hlt
+      border-color: darken($clr-hlt, 15%)
+
+//////////////////////////////////////////////
+// Component: Button
+//////////////////////////////////////////////
+
+.link
+  font-weight: 600
+  background: transparent
+  color: #666
+  padding: 0
+  border: 0
+  +transition(color)
+  &--active
+    color: $clr-hlt
+  &:hover,
+  &:focus,
+  &:active
+    cursor: pointer
+    outline: 0
+
+//////////////////////////////////////////////
+// Component: Footer
+//////////////////////////////////////////////
+
+.footer
+  padding: 0 $blh $blh $blh
+  color: #666
+
+//////////////////////////////////////////////
+// Component: Dice
+//////////////////////////////////////////////
+
+.die
+  padding: $blh
+  text-align: center
+  &__inner
+    position: relative
+    display: inline-block
+    width: $blh*4
+    height: $blh*4
+    font-weight: 600
+    border-radius: 100%
+    line-height: $blh*4
+    border: solid 1px $clr-hlt
+    +gradient-bg-horiz(lighten($clr-hlt, 15%), saturate($clr-hlt, 5%))
+  &__roll
+    @extend .fs-h2
+    color: #fff
+
+.diceroller
+  display: none
+
+//////////////////////////////////////////////
+// Component: #
+//////////////////////////////////////////////
+
+.group
+  margin-bottom: $blh/2
+
+.label
+  display: inline-block
+  margin-right: $blh/4
+
+//////////////////////////////////////////////
+// Component: #
+//////////////////////////////////////////////
